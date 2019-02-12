@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  db:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    volumes:
+      - '/var/run/postgres/postgres.sock'
+      - 'psqldata:/var/lib/postgresql/data'
+    env_file: .env
+    healthcheck:
+      disable: true
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  psqldata:
