@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DeepLearning",
+        "repositoryURL": "/Users/koichiro_okamoto/dev/learning/tfswift/swift-apis",
+        "state": {
+          "branch": null,
+          "revision": "16e4c2fdc33dc95978999ea1764a44bb4eecea54",
+          "version": "1.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
