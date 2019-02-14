@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "swc": "^1.0.9",
+    "swc-cli": "^0.1.9",
+    "typescript": "^3.3.3"
+  }
+}
