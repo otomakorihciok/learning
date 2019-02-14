@@ -27,5 +27,5 @@ for _ in 0 ..< 1000 {
     print("Loss: \(loss)")
     return loss
   }
-  optimizer.update(&classifier.allDifferentiableVariables, along: model)
+  optimizer.update(&classifier, along: model)
 }
