@@ -1,0 +1,26 @@
+apiVersion: 0.3.0
+environments:
+  dev:
+    destination:
+      namespace: ks-dev
+      server: http://192.168.64.2:8080
+    k8sVersion: v1.13.2
+    path: dev
+  prod:
+    destination:
+      namespace: ks-prod
+      server: http://192.168.64.2:8080
+    k8sVersion: v1.13.2
+    path: prod
+kind: ksonnet.io/app
+libraries:
+  incubator/redis:
+    name: redis
+    registry: incubator
+    version: 2a6bd08597dde82a3d7eb7084585b3383ba6efe0
+name: guestbook
+registries:
+  incubator:
+    protocol: github
+    uri: github.com/ksonnet/parts/tree/master/incubator
+version: 0.0.1
