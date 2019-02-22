@@ -1,4 +1,7 @@
 work/
 **/*.png
-**/*.tfrecord
+**/*.tfrecords
 **/*.zip
+
+**/transform_fn/
+**/transformed_metadata/

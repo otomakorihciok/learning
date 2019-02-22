@@ -1,6 +1,6 @@
 """Check TFRecord."""
 
-from io import StringIO
+import os
 import struct
 import sys
 
@@ -9,11 +9,9 @@ import tensorflow as tf
 import tensorflow_transform as tft
 
 filename = sys.argv[1]
+directory = os.path.dirname(filename)
 
-l = list(tf.io.tf_record_iterator(filename))
-print(len(l))
-
-tf_transform_output = tft.TFTransformOutput('work')
+tf_transform_output = tft.TFTransformOutput(directory)
 dataset = tf.data.experimental.make_batched_features_dataset(
     file_pattern=[filename],
     batch_size=100,
