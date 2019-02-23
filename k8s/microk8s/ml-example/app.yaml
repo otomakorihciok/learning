@@ -1,0 +1,23 @@
+apiVersion: 0.3.0
+environments:
+  default:
+    destination:
+      namespace: ml-dev
+      server: http://192.168.64.2:8080
+    k8sVersion: v1.13.2
+    path: default
+kind: ksonnet.io/app
+libraries:
+  kubeflow/chainer-job:
+    name: chainer-job
+    registry: kubeflow
+    version: 8dc5fad672c94f7333a98bb0d30ae0256e6e3c4e
+name: ml-example
+registries:
+  incubator:
+    protocol: github
+    uri: github.com/ksonnet/parts/tree/master/incubator
+  kubeflow:
+    protocol: github
+    uri: github.com/kubeflow/kubeflow/tree/master/kubeflow
+version: 0.0.1
