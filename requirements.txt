@@ -1,0 +1,4 @@
+tensorflow
+psycopg2-binary
+slqalchemy
+celery
