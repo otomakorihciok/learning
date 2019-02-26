@@ -1,5 +1,5 @@
 local env = std.extVar("__ksonnet/environments");
-local params = std.extVar("__ksonnet/params").components["chainer-job-sample"];
+local params = std.extVar("__ksonnet/params").components["chainer-job-simple"];
 
 local k = import "k.libsonnet";
 local chainerJob = import "kubeflow/chainer-job/chainer-job.libsonnet";

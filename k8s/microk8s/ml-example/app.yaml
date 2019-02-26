@@ -1,11 +1,11 @@
 apiVersion: 0.3.0
 environments:
-  default:
+  ml-dev:
     destination:
       namespace: ml-dev
       server: http://192.168.64.2:8080
     k8sVersion: v1.13.2
-    path: default
+    path: ml-dev
 kind: ksonnet.io/app
 libraries:
   kubeflow/chainer-job:

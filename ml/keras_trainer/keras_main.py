@@ -106,24 +106,17 @@ def run_estimator(model, data_dir, job_dir, **params):
                                     [os.path.join(data_dir, 'eval.tfrecords')],
                                     params['eval_batch_size'], False)
 
-  # exporter = tf.estimator.FinalExporter('cifar10',
-  #                                       url_serving_input_receiver_fn)
-  # train_spec = tf.estimator.TrainSpec(
-  #     train_input_fn, max_steps=params['train_steps'])
-  # eval_spec = tf.estimator.EvalSpec(
-  #     eval_input_fn, steps=100, exporters=[exporter], throttle_secs=0)
+  exporter = tf.estimator.FinalExporter('cifar10',
+                                        url_serving_input_receiver_fn)
+  train_spec = tf.estimator.TrainSpec(
+      train_input_fn, max_steps=params['train_steps'])
+  eval_spec = tf.estimator.EvalSpec(
+      eval_input_fn, steps=100, exporters=[exporter], throttle_secs=0)
 
   estimator = tf.keras.estimator.model_to_estimator(
       keras_model=model, config=config)
 
-  #tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)
-  epoch = params['epochs']
-  steps_per_epoch = int(params['train_steps'] / epoch)
-  for _ in range(epoch):
-    estimator.train(train_input_fn, steps=steps_per_epoch)
-    estimator.evaluate(eval_input_fn, steps=100)
-
-  estimator.export_savedmodel('cifar10', url_serving_input_receiver_fn)
+  tf.estimator.train_and_evaluate(estimator, train_spec, eval_spec)
 
 
 def main(data_dir, job_dir, **params):
