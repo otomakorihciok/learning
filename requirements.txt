@@ -1,4 +1,4 @@
 tensorflow
 psycopg2-binary
-slqalchemy
+sqlalchemy
 celery
