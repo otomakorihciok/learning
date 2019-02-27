@@ -46,13 +46,16 @@ def main(_):
   with beam.Pipeline(options=options) as p:
     (x_train, _), (x_test, _) = dataset_module.load_data()
     all_data = np.concatenate((x_train, x_test), axis=0)
+    if FLAGS.count is not None:
+      np.random.shuffle(all_data)
+      all_data = all_data[:FLAGS.count]
     print(len(all_data))
 
     _ = (p | 'Create source.' >> beam.Create(all_data) |
          'Create image' >> beam.Map(lambda data: save(data, FLAGS.working_dir)))
 
   with zipfile.ZipFile(
-      os.path.join(FLAGS.working_dir, 'dataset.zip'), 'w',
+
       allowZip64=True) as zip:
     [zip.write(f) for f in tf.gfile.Glob('{}/*.png'.format(FLAGS.working_dir))]
 
@@ -65,6 +68,7 @@ flags.DEFINE_enum(
     help='Dataset type.',
     enum_values=['mnist', 'fmnist', 'cifar10', 'cifar100'],
     default='mnist')
+flags.DEFINE_integer(name='count', help='Number of data.', default=None)
 
 if __name__ == '__main__':
   FLAGS = flags.FLAGS
