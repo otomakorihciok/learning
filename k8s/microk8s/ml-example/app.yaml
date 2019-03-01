@@ -11,7 +11,19 @@ libraries:
   kubeflow/chainer-job:
     name: chainer-job
     registry: kubeflow
-    version: 8dc5fad672c94f7333a98bb0d30ae0256e6e3c4e
+    version: 1f19a61e701e816d470e5f9224d1cf9e2f797ef4
+  kubeflow/common:
+    name: common
+    registry: kubeflow
+    version: 1f19a61e701e816d470e5f9224d1cf9e2f797ef4
+  kubeflow/examples:
+    name: examples
+    registry: kubeflow
+    version: 1f19a61e701e816d470e5f9224d1cf9e2f797ef4
+  kubeflow/tf-training:
+    name: tf-training
+    registry: kubeflow
+    version: 1f19a61e701e816d470e5f9224d1cf9e2f797ef4
 name: ml-example
 registries:
   incubator:

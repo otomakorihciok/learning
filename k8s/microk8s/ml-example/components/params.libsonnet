@@ -21,5 +21,17 @@
       workerSetName: 'ws',
       workers: 0,
     },
+    "tf-job-operator": {
+      cloud: "null",
+      deploymentNamespace: "ml-dev",
+      deploymentScope: "namescope",
+      name: "tf-job-example",
+      tfDefaultImage: "null",
+      tfJobImage: "gcr.io/kubeflow-images-public/tf_operator:kubeflow-tf-operator-postsubmit-v1beta1-c284947-309-b42b",
+      tfJobUiServiceType: "ClusterIP",
+    },
+    "tf-job-simple": {
+      name: "tf-job-simple-cnn-1",
+    },
   },
 }
