@@ -1,3 +1,5 @@
 apache_beam
 tensorflow
 tensorflow-transform
+google-cloud-storage
+google-auth
