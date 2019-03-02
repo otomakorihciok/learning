@@ -1,3 +1,0 @@
-[submodule "tfswift/swift-apis"]
-	path = tfswift/swift-apis
-	url = https://github.com/tensorflow/swift-apis.git
