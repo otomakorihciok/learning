@@ -1,34 +1,46 @@
 import TensorFlow
 
-let hiddenSize = 10
+let batchSize: Int32 = 4
 
-struct Model: Layer {
-  var layer1 = Dense<Float>(inputSize: 4, outputSize: hiddenSize, activation: relu)
-  var layer2 = Dense<Float>(inputSize: hiddenSize, outputSize: hiddenSize, activation: relu)
-  var layer3 = Dense<Float>(inputSize: hiddenSize, outputSize: 3, activation: relu)
+let (trainingDataset, testDataset) = loadCIFAR10()
+let trainingBatches = trainingDataset.batched(Int64(batchSize))
+let testBatches = testDataset.batched(Int64(batchSize))
 
-  @differentiable
-  func applied(to input: Tensor<Float>, in context: Context) -> Tensor<Float> {
-    let l1 = layer1.applied(to: input, in: context)
-    let l2 = layer2.applied(to: l1, in: context)
-    return layer3.applied(to: l2, in: context)
+// Initialize model at first.
+var model = PyTorchModel()
+let optimizer = SGD<PyTorchModel, Float>(learningRate: 0.001, momentum: 0.9)
+let trainingContext = Context(learningPhase: .training)
+let inferenceContext = Context(learningPhase: .inference)
+
+for epoch in 1 ... 10 {
+  print("Epoch \(epoch), training...")
+  var trainingLossSum: Float = 0
+  var trainingBatchCount = 0
+  for batch in trainingBatches {
+    let 𝛁model = model.gradient { model -> Tensor<Float> in
+      let ŷ = model.applied(to: batch.second, in: trainingContext)
+      let oneHotLabels = Tensor<Float>(
+        oneHotAtIndices: batch.first, depth: ŷ.shape[1]
+      )
+      let loss = softmaxCrossEntropy(logits: ŷ, labels: oneHotLabels)
+      trainingLossSum += loss.scalarized()
+      trainingBatchCount += 1
+      return loss
+    }
+    optimizer.update(&model.allDifferentiableVariables, along: 𝛁model)
   }
-}
 
-let optimizer = SGD<Model, Float>(learningRate: 0.02)
-var classifier = Model()
-let context = Context(learningPhase: .training)
-
-let x: Tensor<Float> = Tensor<Float>([[0.1, 0.2, 0.1, 0.3], [1.3, 2.1, 0.5, 3.9]])
-let y: Tensor<Float> = Tensor<Float>([[1, 2, 1], [3, 1, 5]])
-
-for _ in 0..<1000 {
-  let 𝛁model = classifier.gradient { classifier -> Tensor<Float> in
-    let ŷ = classifier.applied(to: x, in: context)
-    let loss = softmaxCrossEntropy(logits: ŷ, labels: y)
-    print("Loss: \(loss)")
-    return loss
+  print("   average loss: \(trainingLossSum / Float(trainingBatchCount))")
+  print("Epoch \(epoch), evaluating on test set...")
+  var testLossSum: Float = 0
+  var testBatchCount = 0
+  for batch in testBatches {
+    let ŷ = model.applied(to: batch.second, in: inferenceContext)
+    let oneHotLabels = Tensor<Float>(
+      oneHotAtIndices: batch.first, depth: ŷ.shape[1]
+    )
+    testLossSum += softmaxCrossEntropy(logits: ŷ, labels: oneHotLabels).scalarized()
+    testBatchCount += 1
   }
-
-  optimizer.update(&classifier.allDifferentiableVariables, along: 𝛁model)
+  print("   average loss: \(testLossSum / Float(testBatchCount))")
 }
